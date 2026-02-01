@@ -43,7 +43,22 @@ To customize the app's package name and display name for your brand:
     *   **Android**: Update `android/app/build.gradle` (`applicationId`) and `android/app/src/main/AndroidManifest.xml` (`android:label`).
     *   **iOS**: Update `ios/Runner.xcodeproj/project.pbxproj` (`PRODUCT_BUNDLE_IDENTIFIER`) and `ios/Runner/Info.plist` (`CFBundleDisplayName`).
 
-### 4. Firebase Configuration
+### 4. Change Website URL
+
+The app is pre-configured to point to a demo site. To connect it to your own WordPress website:
+
+1.  Open `lib/config/app_config.dart`.
+2.  Find the `AppConfig.defaults()` section.
+3.  Update the `baseWebUrl` and `apiBaseUrl` to match your domain:
+
+    ```dart
+    baseWebUrl: 'https://your-website.com',
+    apiBaseUrl: 'https://your-website.com/wp-json/alisha/v1',
+    ```
+
+    > **Important**: Keep the `/wp-json/alisha/v1` suffix for the `apiBaseUrl` so the app can communicate with the plugin.
+
+### 5. Firebase Configuration
 
 This app uses Firebase for Analytics, Crashlytics, and (optional) Push Notifications. You need to link it to your own Firebase project.
 
@@ -64,7 +79,7 @@ This app uses Firebase for Analytics, Crashlytics, and (optional) Push Notificat
     *   Select the platforms (Android & iOS).
     *   This will automatically update `lib/firebase_options.dart` and download the necessary `google-services.json` / `GoogleService-Info.plist` files.
 
-### 5. Building with Codemagic
+### 6. Building with Codemagic
 
 Codemagic is recommended for automating your builds for the Play Store and App Store.
 
