@@ -1,0 +1,22 @@
+{
+  "app_name": "Alisha",
+  "developer_name": "KloudBoy",
+  "developer_website": "https://kloudboy.com",
+  "base_web_url": "https://wpx.bevq.in",
+  "api_base_url": "https://wpx.bevq.in/wp-json/alisha/v1",
+  "styling": {
+    "primary_color": "#6200EE",
+    "secondary_color": "#03DAC6",
+    "dark_mode_enabled": true
+  },
+  "features": {
+    "firebase_enabled": false,
+    "push_notifications_enabled": false,
+    "maintenance_mode": false,
+    "ads_enabled": false
+  },
+  "updates": {
+    "force_update_version": "1.0.0"
+  },
+  "environment": "prod"
+}
