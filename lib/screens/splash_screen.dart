@@ -65,6 +65,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
     if (!mounted) return;
 
     final shouldShow = await onboardingService.shouldShowOnboarding();
+    if (!mounted) return;
 
     if (shouldShow) {
       Navigator.of(context).pushReplacement(
@@ -101,7 +102,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                  Container(
                    padding: const EdgeInsets.all(20),
                    decoration: BoxDecoration(
-                     color: config.primaryColor.withOpacity(0.1),
+                     color: config.primaryColor.withValues(alpha: 0.1),
                      shape: BoxShape.circle,
                    ),
                    child: Icon(

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../utils/constants.dart';
 import '../models/onboarding_config.dart';
 
 class OnboardingService {
@@ -32,12 +33,11 @@ class OnboardingService {
   /// Fetch from API and update cache
   Future<void> fetchConfig(String baseUrl) async {
     try {
-      // Clean URL logic
-      String url = baseUrl;
-      if (url.endsWith('/')) url = url.substring(0, url.length - 1);
-      final uri = Uri.parse('$url/alisha/v1/onboarding');
+      final uri = _buildOnboardingUri(baseUrl);
 
-      final response = await http.get(uri);
+      final response = await http
+          .get(uri, headers: {'X-Alisha-App-Id': AppConstants.apiAppId})
+          .timeout(const Duration(seconds: 5));
       if (response.statusCode == 200) {
         final Map<String, dynamic> jsonMap = json.decode(response.body);
         _config = OnboardingConfig.fromJson(jsonMap);
@@ -51,6 +51,26 @@ class OnboardingService {
     } catch (e) {
       if (kDebugMode) print('Error fetching onboarding config: $e');
     }
+  }
+
+  Uri _buildOnboardingUri(String baseUrl) {
+    final url = baseUrl.trim().replaceFirst(RegExp(r'/+$'), '');
+
+    if (url.endsWith('/wp-json/alisha/v1')) {
+      return Uri.parse('$url/onboarding').replace(queryParameters: {
+        'app_id': AppConstants.apiAppId,
+      });
+    }
+
+    if (url.endsWith('/wp-json')) {
+      return Uri.parse('$url/alisha/v1/onboarding').replace(queryParameters: {
+        'app_id': AppConstants.apiAppId,
+      });
+    }
+
+    return Uri.parse('$url/wp-json/alisha/v1/onboarding').replace(queryParameters: {
+      'app_id': AppConstants.apiAppId,
+    });
   }
 
   /// Check if we should show onboarding

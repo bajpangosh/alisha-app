@@ -109,7 +109,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               end: Alignment.bottomCenter,
               colors: [
                 Colors.transparent,
-                Colors.black.withOpacity(config.settings.overlayOpacity),
+                Colors.black.withValues(alpha: config.settings.overlayOpacity),
               ],
             ),
           ),
@@ -157,7 +157,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               borderRadius: BorderRadius.circular(24),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
+                  color: Colors.black.withValues(alpha: 0.05),
                   blurRadius: 20,
                   offset: const Offset(0, 10),
                 )
@@ -217,7 +217,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   borderRadius: BorderRadius.circular(24),
                   boxShadow: [
                     BoxShadow(
-                      color: config.settings.primaryColor.withOpacity(0.15),
+                      color: config.settings.primaryColor.withValues(alpha: 0.15),
                       blurRadius: 30,
                       offset: const Offset(0, 15),
                     )

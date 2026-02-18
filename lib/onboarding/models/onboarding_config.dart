@@ -17,11 +17,33 @@ class OnboardingConfig {
 
   factory OnboardingConfig.defaults() {
     return OnboardingConfig(
-      enabled: false,
+      enabled: true,
       version: '1.0',
       style: 'fullscreen',
       settings: OnboardingSettings.defaults(),
-      steps: [],
+      steps: [
+        OnboardingStep(
+          id: 'welcome',
+          title: 'Welcome to Alisha',
+          description: 'Discover a faster and cleaner way to browse your WordPress-powered content.',
+          imageUrl: 'https://images.unsplash.com/photo-1557682250-33bd709cbe85?auto=format&fit=crop&w=1080&q=80',
+          buttonText: 'Next',
+        ),
+        OnboardingStep(
+          id: 'menus',
+          title: 'Smart Navigation',
+          description: 'Use the drawer and bottom menu to jump quickly between key pages.',
+          imageUrl: 'https://images.unsplash.com/photo-1518773553398-650c184e0bb3?auto=format&fit=crop&w=1080&q=80',
+          buttonText: 'Continue',
+        ),
+        OnboardingStep(
+          id: 'ready',
+          title: 'You Are Ready',
+          description: 'Personalize settings anytime from your dashboard and publish updates instantly.',
+          imageUrl: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1080&q=80',
+          buttonText: 'Get Started',
+        ),
+      ],
     );
   }
 

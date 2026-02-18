@@ -12,11 +12,15 @@ class MenuItem {
   });
 
   factory MenuItem.fromJson(Map<String, dynamic> json) {
+    final rawAction = (json['action'] ?? json['type'] ?? '').toString().trim();
+    final normalizedAction = rawAction.isEmpty ? 'url' : rawAction;
+    final rawValue = json['value'] ?? json['url'] ?? json['link'] ?? json['path'] ?? '';
+
     return MenuItem(
       label: json['label'] ?? '',
       icon: json['icon'] ?? '',
-      action: json['action'] ?? 'url',
-      value: json['value'] ?? '',
+      action: normalizedAction,
+      value: rawValue.toString(),
     );
   }
 }

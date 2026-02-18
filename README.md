@@ -28,35 +28,51 @@ flutter pub get
 
 To customize the app's package name and display name for your brand:
 
-1.  **Update `pubspec.yaml`**: Change the `name` and `description` fields.
+1.  **Install the `rename` package globally**:
+
+    ```bash
+    flutter pub global activate rename
+    ```
+
 2.  **Use the `rename` utility** (recommended):
 
     ```bash
-    # Install the rename package globally
-    flutter pub global activate rename
+    # Set bundle/application id
+    rename setBundleId --value com.yourcompany.yourapp
 
-    # Run the rename command
-    flutter pub global run rename --bundleId com.yourcompany.yourapp --appname "Your App Name"
+    # Set app display name
+    rename setAppName --value "Your App Name"
     ```
 
-3.  **Manual Method**:
+3.  **Update `pubspec.yaml`**: Change the `name` and `description` fields.
+
+4.  **Manual Method** (if you don't want to use `rename`):
     *   **Android**: Update `android/app/build.gradle` (`applicationId`) and `android/app/src/main/AndroidManifest.xml` (`android:label`).
     *   **iOS**: Update `ios/Runner.xcodeproj/project.pbxproj` (`PRODUCT_BUNDLE_IDENTIFIER`) and `ios/Runner/Info.plist` (`CFBundleDisplayName`).
 
 ### 4. Change Website URL
 
-The app is pre-configured to point to a demo site. To connect it to your own WordPress website:
+The app is pre-configured to point to a demo site. You can configure URLs in two ways:
 
-1.  Open `lib/config/app_config.dart`.
-2.  Find the `AppConfig.defaults()` section.
-3.  Update the `baseWebUrl` and `apiBaseUrl` to match your domain:
+1.  **Recommended (CI/CD via Codemagic): pass build-time env values with `--dart-define`**
+    ```bash
+    --dart-define=ALISHA_APP_NAME=Your App Name
+    --dart-define=ALISHA_APP_ID=com.yourcompany.yourapp
+    --dart-define=ALISHA_API_APP_ID=com.kloudboy.alisha
+    --dart-define=ALISHA_BASE_WEB_URL=https://your-website.com
+    --dart-define=ALISHA_API_BASE_URL=https://your-website.com/wp-json/alisha/v1
+    ```
+    `ALISHA_API_APP_ID` should match the app-id expected by your WordPress plugin endpoint validation.
+    If `ALISHA_API_BASE_URL` is omitted, it is auto-derived from `ALISHA_BASE_WEB_URL`.
 
+2.  **Manual fallback in code**
+    Open `lib/config/app_config.dart` and update defaults if needed:
     ```dart
     baseWebUrl: 'https://your-website.com',
     apiBaseUrl: 'https://your-website.com/wp-json/alisha/v1',
     ```
 
-    > **Important**: Keep the `/wp-json/alisha/v1` suffix for the `apiBaseUrl` so the app can communicate with the plugin.
+> **Important**: Keep the `/wp-json/alisha/v1` suffix for `apiBaseUrl` when setting it manually.
 
 ### 5. Firebase Configuration
 
@@ -88,9 +104,22 @@ Codemagic is recommended for automating your builds for the Play Store and App S
 3.  **Configure Workflow**:
     *   Select **Flutter App**.
     *   **Build Triggers**: Set to trigger on push to `main`.
-    *   **Environment Variables**: Add any keys if necessary (though most config is pulled dynamically from your WP site).
+    *   **Environment Variables**: Add:
+        * `ALISHA_APP_NAME=Your App Name`
+        * `ALISHA_APP_ID=com.yourcompany.yourapp`
+        * `ALISHA_API_APP_ID=com.kloudboy.alisha`
+        * `ALISHA_BASE_WEB_URL=https://your-website.com`
+        * `ALISHA_API_BASE_URL=https://your-website.com/wp-json/alisha/v1` (optional if you want auto-derive)
+    *   Add these to Flutter build arguments:
+        * `--dart-define=ALISHA_APP_NAME=$ALISHA_APP_NAME`
+        * `--dart-define=ALISHA_APP_ID=$ALISHA_APP_ID`
+        * `--dart-define=ALISHA_API_APP_ID=$ALISHA_API_APP_ID`
+        * `--dart-define=ALISHA_BASE_WEB_URL=$ALISHA_BASE_WEB_URL`
+        * `--dart-define=ALISHA_API_BASE_URL=$ALISHA_API_BASE_URL`
+    *   Optional: use the included `codemagic.yaml` in project root for reproducible workflows.
 4.  **Distribution**:
     *   **Android**: Upload your Keystore (`.jks`) and set alias/passwords in the Codemagic "Distribution > Android Code Signing" section.
+        * The project reads release signing from `android/key.properties` when present.
     *   **iOS**: Connect your Apple Developer Account to handle signing automatically.
 5.  **Start Build**: Click "Start new build" to generate your `.aab` (Android) or `.ipa` (iOS) files.
 

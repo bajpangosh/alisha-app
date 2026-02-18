@@ -89,7 +89,7 @@ class AppTheme {
         labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
         elevation: 2,
         backgroundColor: Colors.white,
-        indicatorColor: primaryColor.withOpacity(0.1),
+        indicatorColor: primaryColor.withValues(alpha: 0.1),
         labelTextStyle: WidgetStateProperty.resolveWith((states) {
           if (states.contains(WidgetState.selected)) {
             return GoogleFonts.inter(fontSize: 12, fontWeight: FontWeight.w600, color: primaryColor);

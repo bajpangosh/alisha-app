@@ -1,11 +1,9 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 import '../config/app_config.dart';
-import 'firebase_service.dart';
+import '../utils/constants.dart';
 
 class ConfigService {
   AppConfig _config = AppConfig.defaults();
@@ -47,8 +45,13 @@ class ConfigService {
     }
 
     try {
-        final uri = Uri.parse('${_config.apiBaseUrl}/app-config?app_id=com.kloudboy.alisha');
-        final response = await http.get(uri);
+        final url = _config.apiBaseUrl.trim().replaceFirst(RegExp(r'/+$'), '');
+        final uri = Uri.parse('$url/app-config').replace(queryParameters: {
+          'app_id': AppConstants.apiAppId,
+        });
+        final response = await http
+            .get(uri, headers: {'X-Alisha-App-Id': AppConstants.apiAppId})
+            .timeout(const Duration(seconds: 5));
         
         if (response.statusCode == 200) {
           return AppConfig.fromJson(json.decode(response.body));

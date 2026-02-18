@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'services/config_service.dart';
 import 'config/theme_app.dart';
-import 'webview/webview_screen.dart'; // Still needed for type reference if any, but splash handles it. 
-// Actually splash handles routing. 
 import 'screens/maintenance_screen.dart';
 import 'screens/splash_screen.dart';
 

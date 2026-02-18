@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../config/menu_item.dart';
+import '../utils/constants.dart';
 
 class AppConfig {
   final String appName;
@@ -43,12 +44,23 @@ class AppConfig {
   });
 
   factory AppConfig.defaults() {
+    const envBaseWebUrl = String.fromEnvironment(
+      'ALISHA_BASE_WEB_URL',
+      defaultValue: 'https://wpx.bevq.in',
+    );
+    const envApiBaseUrl = String.fromEnvironment(
+      'ALISHA_API_BASE_URL',
+      defaultValue: '',
+    );
+    final normalizedBaseWebUrl = _normalizeUrl(envBaseWebUrl, fallback: 'https://wpx.bevq.in');
+    final normalizedApiBaseUrl = _defaultApiBaseUrl(normalizedBaseWebUrl, envApiBaseUrl);
+
     return AppConfig(
-      appName: 'Alisha',
+      appName: AppConstants.appName,
       developerName: 'KloudBoy',
       developerWebsite: 'https://kloudboy.com',
-      baseWebUrl: 'https://wpx.bevq.in', // Default from user
-      apiBaseUrl: 'https://wpx.bevq.in/wp-json/alisha/v1',
+      baseWebUrl: normalizedBaseWebUrl,
+      apiBaseUrl: normalizedApiBaseUrl,
       primaryColor: const Color(0xFF6200EE),
       secondaryColor: const Color(0xFF03DAC6),
       darkModeEnabled: true,
@@ -116,5 +128,22 @@ class AppConfig {
     } catch (e) {
       return const Color(0xFF6200EE);
     }
+  }
+
+  static String _normalizeUrl(String value, {String fallback = ''}) {
+    final trimmed = value.trim();
+    if (trimmed.isEmpty) return fallback;
+    return trimmed.replaceFirst(RegExp(r'/+$'), '');
+  }
+
+  static String _defaultApiBaseUrl(String baseWebUrl, String explicitApiBaseUrl) {
+    final normalizedExplicit = _normalizeUrl(explicitApiBaseUrl);
+    if (normalizedExplicit.isNotEmpty) return normalizedExplicit;
+
+    final normalizedBase = _normalizeUrl(baseWebUrl);
+    if (normalizedBase.isEmpty) return '';
+    if (normalizedBase.endsWith('/wp-json/alisha/v1')) return normalizedBase;
+    if (normalizedBase.endsWith('/wp-json')) return '$normalizedBase/alisha/v1';
+    return '$normalizedBase/wp-json/alisha/v1';
   }
 }
