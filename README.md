@@ -50,7 +50,19 @@ To customize the app's package name and display name for your brand:
     *   **Android**: Update `android/app/build.gradle` (`applicationId`) and `android/app/src/main/AndroidManifest.xml` (`android:label`).
     *   **iOS**: Update `ios/Runner.xcodeproj/project.pbxproj` (`PRODUCT_BUNDLE_IDENTIFIER`) and `ios/Runner/Info.plist` (`CFBundleDisplayName`).
 
-### 4. Change Website URL
+### 4. App Icon Customization
+
+The project uses `flutter_launcher_icons` to generate icons for Android, iOS, web, Windows, and macOS.
+
+1.  Replace the source icon at:
+    *   `assets/icons/alisha_app_icon.png` (recommended: 1024x1024 PNG)
+2.  Regenerate platform icons:
+    ```bash
+    flutter pub get
+    dart run flutter_launcher_icons
+    ```
+
+### 5. Change Website URL
 
 The app is pre-configured to point to a demo site. You can configure URLs in two ways:
 
@@ -74,7 +86,7 @@ The app is pre-configured to point to a demo site. You can configure URLs in two
 
 > **Important**: Keep the `/wp-json/alisha/v1` suffix for `apiBaseUrl` when setting it manually.
 
-### 5. Firebase Configuration
+### 6. Firebase Configuration
 
 This app uses Firebase for Analytics, Crashlytics, and (optional) Push Notifications. You need to link it to your own Firebase project.
 
@@ -95,7 +107,7 @@ This app uses Firebase for Analytics, Crashlytics, and (optional) Push Notificat
     *   Select the platforms (Android & iOS).
     *   This will automatically update `lib/firebase_options.dart` and download the necessary `google-services.json` / `GoogleService-Info.plist` files.
 
-### 6. Building with Codemagic
+### 7. Building with Codemagic
 
 Codemagic is recommended for automating your builds for the Play Store and App Store.
 

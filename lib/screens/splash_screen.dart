@@ -95,23 +95,9 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
           opacity: _fadeAnimation,
           child: SlideTransition(
             position: _slideAnimation,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                 // App Logo or Name
-                 Container(
-                   padding: const EdgeInsets.all(20),
-                   decoration: BoxDecoration(
-                     color: config.primaryColor.withValues(alpha: 0.1),
-                     shape: BoxShape.circle,
-                   ),
-                   child: Icon(
-                     Icons.auto_awesome, 
-                     size: 64, 
-                     color: config.primaryColor
-                   ),
-                 ),
-                 const SizedBox(height: 24),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
                  Text(
                    config.appName,
                    style: Theme.of(context).textTheme.displayMedium?.copyWith(
